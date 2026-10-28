@@ -436,7 +436,11 @@
     .campaign .left  { left: 62%; }
     .campaign .right { left: 84.5%; }
     @media (min-width: 761px) {
-      .campaign .slide:not(.p03) .word { display: none; }   /* desktop: alleen op de middelste foto */
+      .campaign .slide:not(.mid) .word { display: none; }   /* desktop: alleen op de middelste foto */
+      /* bedfoto: boek staat rechts in beeld, dus Slow Down linksonder op het dekbed */
+      .campaign .mid .word { font-size: 6.5cqw; }
+      .campaign .mid .left  { left: 13%; }
+      .campaign .mid .right { left: 25%; }
     }
 
     /* desktop: de navigatiebalk valt over de foto's heen */
@@ -450,7 +454,11 @@
       }
       .campaign::after {   /* zachte schaduw bovenin de middelste foto, achter de herotekst */
         content: ""; position: absolute; top: 0; left: 33.33%; width: 33.34%; height: 55%; pointer-events: none;
-        background: linear-gradient(rgba(0, 0, 0, .42), transparent);
+        background: linear-gradient(rgba(0, 0, 0, .55), rgba(0, 0, 0, .25) 50%, transparent);
+      }
+      .campaign .mid::after {   /* lichte foto (bed): zachte schaduw onderin achter Slow Down */
+        content: ""; position: absolute; inset: auto 0 0; height: 45%; pointer-events: none;
+        background: linear-gradient(to top, rgba(0, 0, 0, .35), transparent);
       }
     }
 
@@ -537,7 +545,7 @@
     </div>
   </header>
 
-  <!-- Campagnebeeld: drie sfeerfoto's uit 04 Cover/mockups/slack-selectie-2026-10-28 (02, 03, 17); woorden als echte tekst in Lisa Stitch.
+  <!-- Campagnebeeld: drie sfeerfoto's: 02 en 17 uit 04 Cover/mockups/slack-selectie-2026-10-28, midden = genz-48-bed-blauw (eerder 03-gehurkt); woorden als echte tekst in Lisa Stitch.
        Oude skylinefoto staat nog in img/hero-skyline-model.jpg -->
   <div class="campaign-wrap">
   <section class="campaign">
@@ -546,8 +554,8 @@
         <img src="img/hero/02-parijs-zwartejas-closeup-1200.jpg" srcset="img/hero/02-parijs-zwartejas-closeup-640.jpg 640w, img/hero/02-parijs-zwartejas-closeup-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="A woman in a black jacket holds Sudoku and Paper Cross Stitch on a street in Paris">
         <span class="word left" aria-hidden="true">Slow</span><span class="word right" aria-hidden="true">Down</span>
       </div>
-      <div class="slide p03">
-        <img src="img/hero/03-gehurkt-zon-achter-1200.jpg" srcset="img/hero/03-gehurkt-zon-achter-640.jpg 640w, img/hero/03-gehurkt-zon-achter-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="A woman crouches in the sun, reading Sudoku and Paper Cross Stitch">
+      <div class="slide mid">
+        <img src="img/hero/48-bed-blauw-1200.jpg" srcset="img/hero/48-bed-blauw-640.jpg 640w, img/hero/48-bed-blauw-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="Sudoku and Paper Cross Stitch lying on a bed with a light blue floral duvet, next to a window">
         <span class="word left" aria-hidden="true">Slow</span><span class="word right" aria-hidden="true">Down</span>
       </div>
       <div class="slide">
@@ -612,6 +620,7 @@
           <img src="img/gallery/slack-10-eiffel-trap.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
           <img src="img/gallery/slack-08-zebrapad-pov-bont.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
           <img src="img/gallery/slack-01-parijs-croissant.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/genz-48-bed-blauw.jpg" alt="Sudoku and Paper Cross Stitch on a bed with a light blue floral duvet" loading="lazy">
           <img src="img/gallery/slack-13-groene-deur-streep.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
           <img src="img/gallery/slack-17-luipaard-pov.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
           <img src="img/gallery/slack-06-grijze-trui.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
