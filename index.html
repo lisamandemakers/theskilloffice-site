@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Puzzle Books · The Skill Office</title>
   <meta name="description" content="Puzzle books by Lisa Mandemakers: sudoku and paper cross stitch, drawn with a pen.">
-  <meta name="theme-color" content="#a4bcd4">
+  <meta name="theme-color" content="#2b1420">
   <style>
     @font-face { font-family: "Jost"; font-weight: 300; src: url("fonts/Jost-Light.ttf") format("truetype"); font-display: swap; }
     @font-face { font-family: "Jost"; font-weight: 400; src: url("fonts/Jost-Regular.ttf") format("truetype"); font-display: swap; }
@@ -100,7 +100,31 @@
       top: -.15em;
       margin-left: .08em;
     }
-    .ticker { display: none; }
+    /* dunne balk bovenaan met lopende tekst (desktop en mobiel) */
+    .ticker {
+      display: block;
+      overflow: hidden;
+      padding: 9px 0;
+      color: #fff;
+      font-size: 10px;
+    }
+    .ticker .track {
+      display: flex;
+      width: max-content;
+      animation: ticker 64s linear infinite;   /* rustig tempo */
+    }
+    .ticker span { padding-right: 22px; white-space: nowrap; }
+    /* bloemetje (6 blaadjes) in lichtblauw tussen de woorden */
+    .ticker .x {
+      width: 11px; height: 11px;
+      padding: 0;
+      margin-right: 22px;
+      background: var(--blue);
+      -webkit-mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'><defs><path id='p' d='M0 0C-2-9-12-24-12-36A12 12 0 1 1 12-36C12-24 2-9 0 0Z'/></defs><use href='%23p' transform='rotate(0)'/><use href='%23p' transform='rotate(60)'/><use href='%23p' transform='rotate(120)'/><use href='%23p' transform='rotate(180)'/><use href='%23p' transform='rotate(240)'/><use href='%23p' transform='rotate(300)'/></svg>") center / contain no-repeat;
+              mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'><defs><path id='p' d='M0 0C-2-9-12-24-12-36A12 12 0 1 1 12-36C12-24 2-9 0 0Z'/></defs><use href='%23p' transform='rotate(0)'/><use href='%23p' transform='rotate(60)'/><use href='%23p' transform='rotate(120)'/><use href='%23p' transform='rotate(180)'/><use href='%23p' transform='rotate(240)'/><use href='%23p' transform='rotate(300)'/></svg>") center / contain no-repeat;
+      align-self: center;
+    }
+    @keyframes ticker { to { transform: translateX(-50%); } }
 
     /* ---------- Boeken ---------- */
     .book {
@@ -247,31 +271,7 @@
 
     @media (max-width: 760px) {
       /* mobiel: meteen het boek */
-      /* mobiel: de balk bovenaan wordt een lopende tekst */
-      nav { display: none; }
-      .ticker {
-        display: block;
-        overflow: hidden;
-        padding: 9px 0;
-        color: var(--blue);
-        font-size: 10px;
-      }
-      .ticker .track {
-        display: flex;
-        width: max-content;
-        animation: ticker 18s linear infinite;
-      }
-      .ticker span { padding-right: 22px; white-space: nowrap; }
-      /* rondje tussen de woorden */
-      .ticker .x {
-        width: 4px; height: 4px;
-        padding: 0;
-        margin-right: 22px;
-        border-radius: 50%;
-        background: currentColor;
-        align-self: center;
-      }
-      @keyframes ticker { to { transform: translateX(-50%); } }
+      nav { display: none; }   /* mobiel: alleen de lopende balk */
       .book .tag { display: none; }
 
       /* mobiel: reviews swipen, volgende kaart piept in beeld */
@@ -348,13 +348,14 @@
 
     /* mobiel: balk en footer lichtblauw met aubergine tekst */
     @media (max-width: 760px) {
-      .hero, footer { background: var(--blue); color: var(--aubergine); }
+      footer { background: var(--blue); color: var(--aubergine); }
+      .hero { background: var(--aubergine); color: #fff; }   /* balk bovenaan: donkerrood (aubergine) met witte tekst */
       .hero::before {
         background-image:
-          linear-gradient(rgba(43, 20, 32, .12) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(43, 20, 32, .12) 1px, transparent 1px);
+          linear-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, .07) 1px, transparent 1px);
       }
-      .ticker { color: var(--aubergine); }
+      .ticker { color: #fff; }
       footer .logo { color: #fff; }
       .btn:hover { background: var(--aubergine); color: var(--cream); }   /* knop blijft bordeaux */
       .btn:active { background: var(--blue); color: var(--aubergine); }
@@ -369,13 +370,13 @@
       border-top: 1px solid var(--rule);
     }
     .gallery .reviews-head { max-width: 1400px; margin-left: auto; margin-right: auto; padding: 0 24px; }
-    /* rij is scrollbaar (swipen), het script laat hem vanzelf doorlopen */
-    .gallery .row { overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
-    .gallery .row::-webkit-scrollbar { display: none; }
+    /* rij loopt vanzelf door (script); niet swipebaar, dat haperde op mobiel */
+    .gallery .row { overflow: hidden; }
     .gallery .track {
       display: flex;
       gap: 12px;
       width: max-content;
+      will-change: transform;
     }
     .gallery img {
       display: block;
@@ -389,86 +390,130 @@
       .gallery .reviews-head { padding: 0 16px; }
     }
 
-    /* ---------- Campagnebeeld (hero): drie lange portretfoto's naast elkaar, met geborduurde woorden in Lisa Stitch ---------- */
+    /* ---------- Campagnebeeld (hero): drie lange portretfoto's, met geborduurde woorden in Lisa Stitch ---------- */
+    .campaign-wrap { position: relative; }
     .campaign {
       position: relative;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
       height: 90vh;
       width: 100%;
       overflow: hidden;
       background: var(--aubergine);
       container-type: inline-size;
     }
+    .campaign .track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      height: 100%;
+    }
+    .campaign .slide { position: relative; min-width: 0; height: 100%; overflow: hidden; }
     .campaign img {
       display: block;
       width: 100%;
       height: 100%;
-      min-height: 0;
       object-fit: cover;
       object-position: 50% 40%;
+      -webkit-user-drag: none;
+      user-select: none;
     }
-    .campaign img.p03 { object-position: 25% 50%; }   /* boek zit links in de foto */
+    .campaign .p03 img { object-position: 25% 50%; }   /* boek zit links in de foto */
+
+    /* Slow Down: rechtsonder in de foto, van onder naar boven, onderkant op één lijn */
     .campaign .word {
       position: absolute;
-      top: 50%;
+      bottom: 4%;
+      z-index: 1;
       font-family: "Lisa Stitch", "Jost", sans-serif;
-      font-size: 12.5cqw;
+      font-size: 9cqw;
       line-height: 1;
       letter-spacing: 0;
       color: #fff;
       white-space: nowrap;
       text-shadow: 0 0 .12em rgba(255, 255, 255, .35);
-      transform: translate(-50%, -50%) rotate(-90deg);   /* van onder naar boven, zoals in het ontwerp */
+      writing-mode: vertical-rl;
+      transform: translateX(-50%) rotate(180deg);
       pointer-events: none;
     }
-    /* beide woorden rechtsonder in de middelste foto, dicht bij elkaar, onderkant op één lijn */
-    .campaign .word {
-      top: auto;
-      bottom: 4%;
-      writing-mode: vertical-rl;
-      transform: translateX(-50%) rotate(180deg);   /* van onder naar boven */
+    .campaign .left  { left: 62%; }
+    .campaign .right { left: 84.5%; }
+    @media (min-width: 761px) {
+      .campaign .slide:not(.p03) .word { display: none; }   /* desktop: alleen op de middelste foto */
     }
-    .campaign .left  { left: 54%; }
-    .campaign .right { left: 61.5%; }
-    @media (min-width: 761px) { .campaign .word { font-size: 9cqw; } }
 
     /* desktop: de navigatiebalk valt over de foto's heen */
     @media (min-width: 761px) {
-      .hero { position: absolute; top: 0; left: 0; right: 0; z-index: 2; background: none; color: #fff; }
+      .hero { position: relative; z-index: 2; overflow: visible; background: var(--aubergine); color: #fff; }
       .hero::before { display: none; }
+      .hero .wrap { position: absolute; top: 100%; left: 0; right: 0; }   /* nav onder de balk, over de foto's */
       .campaign::before {   /* zachte schaduw bovenin, zodat de nav leesbaar blijft */
         content: ""; position: absolute; inset: 0 0 auto; height: 140px; z-index: 1; pointer-events: none;
         background: linear-gradient(rgba(0, 0, 0, .28), transparent);
       }
+      .campaign::after {   /* zachte schaduw bovenin de middelste foto, achter de herotekst */
+        content: ""; position: absolute; top: 0; left: 33.33%; width: 33.34%; height: 55%; pointer-events: none;
+        background: linear-gradient(rgba(0, 0, 0, .42), transparent);
+      }
     }
 
-    /* herotekst in Jost, linksboven in de middelste foto */
-    .campaign::after {   /* zachte schaduw bovenin de middelste foto voor de leesbaarheid */
-      content: ""; position: absolute; top: 0; left: 33.33%; width: 33.34%; height: 55%; pointer-events: none;
-      background: linear-gradient(rgba(0, 0, 0, .42), transparent);
-    }
-    .campaign .intro {
+    /* herotekst in Jost: linksboven in de middelste foto (alleen desktop) */
+    .campaign-wrap .intro {
       position: absolute;
       left: calc(33.33% + 24px);
       top: 104px;   /* onder de navigatie */
       z-index: 1;
-      max-width: min(calc(33.3% - 48px), 340px);   /* titel op twee regels, binnen de eerste foto */
+      max-width: min(calc(33.3% - 48px), 340px);
       color: #fff;
+      pointer-events: none;
     }
-    .campaign .intro h1 {
+    .campaign-wrap .intro h1 {
       font-weight: 300;
       font-size: clamp(26px, 2.4vw, 38px);
       line-height: 1.05;
       letter-spacing: -0.03em;
       margin: 10px 0 12px;
     }
-    .campaign .intro p { font-size: 15px; max-width: 30ch; opacity: .9; }
-    .campaign .word { z-index: 1; }
+    .campaign-wrap .intro p { font-size: 15px; max-width: 30ch; opacity: .9; }
+    .campaign-dots { display: none; }
+
+    /* mobiel: foto's schermbreed; swipen volgt de vinger (script) */
     @media (max-width: 760px) {
-      .campaign .intro { left: calc(33.33% + 12px); top: 16px; max-width: calc(33.3% - 20px); }   /* binnen de middelste foto */
-      .campaign .intro h1 { font-size: 18px; line-height: 1.08; margin: 8px 0 0; }
-      .campaign .intro p { display: none; }
+      .campaign { height: 80vh; touch-action: pan-y; }   /* verticaal scrollen blijft gewoon werken */
+      .campaign .track {
+        display: flex;
+        will-change: transform;
+        transform: translate3d(0, 0, 0);
+      }
+      .campaign .slide { flex: 0 0 100%; }
+      /* in elke foto: Slow linksboven, Down rechtsonder, met een donkere fade erachter */
+      .campaign .word { font-size: 24cqw; }
+      .campaign .left  { left: 19%; top: 7%; bottom: auto; }
+      .campaign .right { left: 85%; bottom: 8%; }
+      .campaign .slide::after {
+        content: ""; position: absolute; inset: 0; pointer-events: none;
+        background:
+          linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .2) 22%, transparent 42%),
+          linear-gradient(to top, rgba(0, 0, 0, .5), rgba(0, 0, 0, .2) 22%, transparent 42%);
+      }
+
+      .campaign-wrap .intro { display: none; }   /* mobiel: geen herotekst, alleen de foto's met Slow Down */
+
+      /* stipjes onderin; de actieve foto is een streepje */
+      .campaign-dots {
+        position: absolute;
+        left: 0; right: 0; bottom: 16px;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        pointer-events: none;
+      }
+      .campaign-dots i {
+        width: 6px; height: 6px;
+        border-radius: 3px;
+        background: #fff;
+        opacity: .55;
+        transition: width .35s cubic-bezier(.2, .7, .2, 1), opacity .35s;
+      }
+      .campaign-dots i.on { width: 20px; opacity: 1; }
     }
   </style>
 </head>
@@ -478,10 +523,10 @@
   </svg>
 
   <header class="hero">
-    <div class="ticker caps" aria-label="Coming soon">
+    <div class="ticker caps" aria-label="Out now">
       <div class="track" aria-hidden="true">
-        <span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span>
-        <span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span><span>Coming soon</span><span class="x"></span>
+        <span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span>
+        <span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span><span>Out now</span><span class="x"></span>
       </div>
     </div>
     <div class="wrap">
@@ -494,24 +539,30 @@
 
   <!-- Campagnebeeld: drie sfeerfoto's uit 04 Cover/mockups/slack-selectie-2026-10-28 (02, 03, 17); woorden als echte tekst in Lisa Stitch.
        Oude skylinefoto staat nog in img/hero-skyline-model.jpg -->
+  <div class="campaign-wrap">
   <section class="campaign">
-    <img src="img/hero/02-parijs-zwartejas-closeup-1200.jpg"
-         srcset="img/hero/02-parijs-zwartejas-closeup-640.jpg 640w, img/hero/02-parijs-zwartejas-closeup-1200.jpg 1200w" sizes="34vw"
-         alt="A woman in a black jacket holds Sudoku and Paper Cross Stitch on a street in Paris">
-    <img class="p03" src="img/hero/03-gehurkt-zon-achter-1200.jpg"
-         srcset="img/hero/03-gehurkt-zon-achter-640.jpg 640w, img/hero/03-gehurkt-zon-achter-1200.jpg 1200w" sizes="34vw"
-         alt="A woman crouches in the sun, reading Sudoku and Paper Cross Stitch">
-    <img src="img/hero/17-luipaard-pov-1200.jpg"
-         srcset="img/hero/17-luipaard-pov-640.jpg 640w, img/hero/17-luipaard-pov-1200.jpg 1200w" sizes="34vw"
-         alt="Seen from above: hands with rings hold Sudoku and Paper Cross Stitch over a leopard-print jacket">
+    <div class="track">
+      <div class="slide">
+        <img src="img/hero/02-parijs-zwartejas-closeup-1200.jpg" srcset="img/hero/02-parijs-zwartejas-closeup-640.jpg 640w, img/hero/02-parijs-zwartejas-closeup-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="A woman in a black jacket holds Sudoku and Paper Cross Stitch on a street in Paris">
+        <span class="word left" aria-hidden="true">Slow</span><span class="word right" aria-hidden="true">Down</span>
+      </div>
+      <div class="slide p03">
+        <img src="img/hero/03-gehurkt-zon-achter-1200.jpg" srcset="img/hero/03-gehurkt-zon-achter-640.jpg 640w, img/hero/03-gehurkt-zon-achter-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="A woman crouches in the sun, reading Sudoku and Paper Cross Stitch">
+        <span class="word left" aria-hidden="true">Slow</span><span class="word right" aria-hidden="true">Down</span>
+      </div>
+      <div class="slide">
+        <img src="img/hero/17-luipaard-pov-1200.jpg" srcset="img/hero/17-luipaard-pov-640.jpg 640w, img/hero/17-luipaard-pov-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="Seen from above: hands with rings hold Sudoku and Paper Cross Stitch over a leopard-print jacket">
+        <span class="word left" aria-hidden="true">Slow</span><span class="word right" aria-hidden="true">Down</span>
+      </div>
+    </div>
+  </section>
     <div class="intro">
       <div class="caps">Vol. 01</div>
       <h1>Sudoku and Paper<br> Cross Stitch</h1>
       <p>100 easy to medium sudoku puzzles and cross-stitch patterns to draw with a pen.</p>
     </div>
-    <span class="word left" aria-hidden="true">Slow</span>
-    <span class="word right" aria-hidden="true">Down</span>
-  </section>
+    <div class="campaign-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+  </div>
 
   <main class="wrap">
     <!-- Nieuw boek toevoegen: kopieer dit hele <article class="book">-blok en pas foto, teksten en link aan. -->
@@ -525,7 +576,7 @@
         <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
       </div>
       <div>
-        <div class="caps no">Vol. 01 <span class="tag">Coming soon</span></div>
+        <div class="caps no">Vol. 01 <span class="tag">Out now</span></div>
         <h2>Sudoku and Paper Cross Stitch</h2>
         <!-- VOORBEELD: nep-score, later vervangen door de echte Amazon-score -->
         <a class="rating voorbeeld" href="#reviews">
@@ -540,43 +591,41 @@
           <div><dt>Size</dt><dd>5 × 8 in, paperback</dd></div>
         </dl>
         <div class="buy">
-          <!-- Boek nog in review bij Amazon. Zodra het live staat: zet in de <a> hieronder
-               href="https://www.amazon.com/dp/ASIN" target="_blank" rel="noopener", maak de tekst "Buy on Amazon"
-               en zet de labels "Coming soon" weer op "Out now". Foto en knop worden dan vanzelf klikbaar. -->
-          <a class="btn">
-            <span class="caps">Coming soon on Amazon</span>
+          <!-- Amazon-link (ASIN B0HPKT8JLL). Op desktop maakt het script de boekfoto ook klikbaar met deze link. -->
+          <a class="btn" href="https://www.amazon.com/dp/B0HPKT8JLL" target="_blank" rel="noopener">
+            <span class="caps">Buy on Amazon</span>
             <span class="price">$12.99</span>
           </a>
         </div>
       </div>
     </article>
 
-    <!-- Fotogalerij: één rij sfeerbeelden die altijd doorloopt (script verdubbelt de rij voor een naadloze loop) -->
+    <!-- Fotogalerij: één rij sfeerbeelden die altijd doorloopt (script verdubbelt de rij voor een naadloze loop).
+         Volgorde gemixt: nooit twee foto's uit dezelfde shoot naast elkaar (ook niet laatste → eerste). -->
     <section class="gallery">
       <div class="reviews-head">
         <h3>Slow moments, anywhere</h3>
       </div>
       <div class="row tall">
         <div class="track">
-          <img src="img/gallery/slack-01-parijs-croissant.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-02-parijs-zwartejas-closeup.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-03-gehurkt-zon-achter.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-05-blazer-pieddepoule.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-06-grijze-trui.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-07-vriendinnen-eiffel.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-08-zebrapad-pov-bont.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-09-lift-lila-pak.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-10-eiffel-trap.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-11-eiffel-balustrade-closeup.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-12-kaki-trench.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-13-groene-deur-streep.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-14-geel-vest-tas.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-16-streep-pov.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-17-luipaard-pov.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
-          <img src="img/gallery/slack-18-luipaard-parijs.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
           <img src="img/gallery/slack-19-bril-selfie.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-10-eiffel-trap.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-08-zebrapad-pov-bont.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-01-parijs-croissant.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-13-groene-deur-streep.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-17-luipaard-pov.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-06-grijze-trui.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
           <img src="img/gallery/slack-20-bril-stoeprand.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-11-eiffel-balustrade-closeup.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-14-geel-vest-tas.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-03-gehurkt-zon-achter.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-16-streep-pov.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-02-parijs-zwartejas-closeup.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-18-luipaard-parijs.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-05-blazer-pieddepoule.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
           <img src="img/gallery/slack-21-bril-zwaai.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-12-kaki-trench.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
+          <img src="img/gallery/slack-07-vriendinnen-eiffel.jpg" alt="Sudoku and Paper Cross Stitch in a calm, everyday moment" loading="lazy">
         </div>
       </div>
     </section>
@@ -634,31 +683,22 @@
       t.querySelectorAll('img').forEach((img, i) => { if (i >= n) img.alt = ''; });
     });
 
-    // fotogalerij: loopt vanzelf door; swipen of muis erop = pauze, daarna loopt hij verder
+    // fotogalerij: loopt vanzelf door (niet swipebaar); muis erop = pauze
     document.querySelectorAll('.gallery .row').forEach((row) => {
       const track = row.querySelector('.track');
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
       const speed = () => (matchMedia('(max-width: 760px)').matches ? 45 : 40);   // pixels per seconde
-      let pos = 0, paused = false, last = null, timer;
+      let pos = 0, paused = false, last = null;
       const half = () => track.scrollWidth / 2;
-      const pause = () => { paused = true; clearTimeout(timer); };
-      const resume = (ms) => { clearTimeout(timer); timer = setTimeout(() => { pos = row.scrollLeft; paused = false; }, ms); };
 
-      row.addEventListener('touchstart', pause, { passive: true });
-      row.addEventListener('touchend', () => resume(1500), { passive: true });
-      row.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') pause(); });
-      row.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') resume(0); });
-      row.addEventListener('scroll', () => {   // ook bij zelf swipen naadloos rondgaan
-        if (!paused) return;
-        if (row.scrollLeft >= half()) row.scrollLeft -= half();
-        else if (row.scrollLeft <= 0) row.scrollLeft += half();
-      }, { passive: true });
+      row.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') paused = true; });
+      row.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') paused = false; });
 
       const tick = (ts) => {
         if (last !== null && !paused && !reduce) {
-          pos += speed() * (ts - last) / 1000;
+          pos += speed() * Math.min(ts - last, 100) / 1000;
           if (pos >= half()) pos -= half();
-          row.scrollLeft = pos;
+          track.style.transform = `translate3d(${-pos}px, 0, 0)`;   // transform loopt soepeler dan scrollen
         }
         last = ts;
         requestAnimationFrame(tick);
@@ -673,6 +713,65 @@
       book.classList.add('has-link');
       book.querySelector('.shot').addEventListener('click', () => {
         if (matchMedia('(min-width: 761px)').matches) window.open(btn.href, '_blank', 'noopener');
+      });
+    });
+
+    // mobiel: hero-slider volgt de vinger en glijdt daarna vloeiend naar de dichtstbijzijnde foto
+    document.querySelectorAll('.campaign-wrap').forEach((wrap) => {
+      const box = wrap.querySelector('.campaign');
+      const track = box.querySelector('.track');
+      const dots = wrap.querySelectorAll('.campaign-dots i');
+      const n = track.children.length;
+      const mobile = matchMedia('(max-width: 760px)');
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let index = 0, startX = 0, startY = 0, startT = 0, dx = 0, dragging = false, decided = false;
+
+      const setX = (x, animate) => {
+        track.style.transition = animate ? `transform ${reduce ? .2 : .55}s cubic-bezier(.22, .9, .3, 1)` : 'none';
+        track.style.transform = `translate3d(${x}px, 0, 0)`;
+      };
+      const go = (i) => {
+        index = Math.max(0, Math.min(n - 1, i));
+        setX(-index * box.clientWidth, true);
+        dots.forEach((d, k) => d.classList.toggle('on', k === index));
+      };
+
+      box.addEventListener('pointerdown', (e) => {
+        if (!mobile.matches) return;
+        dragging = true; decided = false; dx = 0;
+        startX = e.clientX; startY = e.clientY; startT = performance.now();
+      });
+      box.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const mx = e.clientX - startX, my = e.clientY - startY;
+        if (!decided) {
+          if (Math.abs(mx) < 6 && Math.abs(my) < 6) return;
+          decided = true;
+          if (Math.abs(my) > Math.abs(mx)) { dragging = false; return; }   // verticaal: pagina scrollt
+          try { box.setPointerCapture(e.pointerId); } catch (_) {}
+        }
+        dx = mx;
+        // aan het begin en eind: elastisch tegenhouden
+        if ((index === 0 && dx > 0) || (index === n - 1 && dx < 0)) dx *= .35;
+        setX(-index * box.clientWidth + dx, false);
+      });
+      const end = () => {
+        if (!dragging) return;
+        dragging = false;
+        const v = dx / Math.max(1, performance.now() - startT);   // pixels per ms
+        const w = box.clientWidth;
+        if (dx < -w * .18 || v < -.35) go(index + 1);
+        else if (dx > w * .18 || v > .35) go(index - 1);
+        else go(index);
+      };
+      box.addEventListener('pointerup', end);
+      box.addEventListener('pointercancel', end);
+      box.addEventListener('dragstart', (e) => e.preventDefault());
+
+      // bij draaien of naar desktop: netjes op de juiste plek
+      addEventListener('resize', () => {
+        if (mobile.matches) setX(-index * box.clientWidth, false);
+        else { track.style.transform = ''; track.style.transition = ''; }
       });
     });
 
