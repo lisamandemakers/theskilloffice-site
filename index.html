@@ -394,7 +394,7 @@
     .campaign-wrap { position: relative; }
     .campaign {
       position: relative;
-      height: 90vh;
+      height: 80vh;
       width: 100%;
       overflow: hidden;
       background: var(--aubergine);
@@ -462,8 +462,9 @@
       }
     }
 
-    /* herotekst in Jost: linksboven in de middelste foto (alleen desktop) */
+    /* herotekst: onzichtbaar (keuze Lisa 29-10), blijft wel in de code voor Google en schermlezers */
     .campaign-wrap .intro {
+      clip: rect(0 0 0 0); clip-path: inset(50%); width: 1px !important; height: 1px; overflow: hidden; white-space: nowrap;
       position: absolute;
       left: calc(33.33% + 24px);
       top: 104px;   /* onder de navigatie */
@@ -502,7 +503,6 @@
           linear-gradient(to top, rgba(0, 0, 0, .5), rgba(0, 0, 0, .2) 22%, transparent 42%);
       }
 
-      .campaign-wrap .intro { display: none; }   /* mobiel: geen herotekst, alleen de foto's met Slow Down */
 
       /* stipjes onderin; de actieve foto is een streepje */
       .campaign-dots {
