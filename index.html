@@ -405,7 +405,7 @@
       grid-template-columns: repeat(3, 1fr);
       height: 100%;
     }
-    .campaign .slide { position: relative; min-width: 0; height: 100%; overflow: hidden; }
+    .campaign .slide { position: relative; min-width: 0; height: 100%; overflow: hidden; container-type: inline-size; }   /* cqw = breedte van de foto */
     .campaign img {
       display: block;
       width: 100%;
@@ -435,12 +435,19 @@
     }
     .campaign .left  { left: 62%; }
     .campaign .right { left: 84.5%; }
+    /* in de foto: Slow linksboven, Down rechtsonder, met een donkere fade erachter (desktop en mobiel gelijk) */
+    .campaign .word { font-size: 24cqw; }
+    .campaign .left  { left: 19%; top: 7%; bottom: auto; }
+    .campaign .right { left: 85%; bottom: 8%; }
+    .campaign .slide::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background:
+        linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .2) 22%, transparent 42%),
+        linear-gradient(to top, rgba(0, 0, 0, .5), rgba(0, 0, 0, .2) 22%, transparent 42%);
+    }
     @media (min-width: 761px) {
       .campaign .slide:not(.mid) .word { display: none; }   /* desktop: alleen op de middelste foto */
-      /* bedfoto: boek staat rechts in beeld, dus Slow Down linksonder op het dekbed */
-      .campaign .mid .word { font-size: 6.5cqw; }
-      .campaign .mid .left  { left: 13%; }
-      .campaign .mid .right { left: 25%; }
+      .campaign .slide:not(.mid)::after { display: none; }
     }
 
     /* desktop: de navigatiebalk valt over de foto's heen */
@@ -451,14 +458,6 @@
       .campaign::before {   /* zachte schaduw bovenin, zodat de nav leesbaar blijft */
         content: ""; position: absolute; inset: 0 0 auto; height: 140px; z-index: 1; pointer-events: none;
         background: linear-gradient(rgba(0, 0, 0, .28), transparent);
-      }
-      .campaign::after {   /* zachte schaduw bovenin de middelste foto, achter de herotekst */
-        content: ""; position: absolute; top: 0; left: 33.33%; width: 33.34%; height: 55%; pointer-events: none;
-        background: linear-gradient(rgba(0, 0, 0, .55), rgba(0, 0, 0, .25) 50%, transparent);
-      }
-      .campaign .mid::after {   /* lichte foto (bed): zachte schaduw onderin achter Slow Down */
-        content: ""; position: absolute; inset: auto 0 0; height: 45%; pointer-events: none;
-        background: linear-gradient(to top, rgba(0, 0, 0, .35), transparent);
       }
     }
 
@@ -492,16 +491,6 @@
         transform: translate3d(0, 0, 0);
       }
       .campaign .slide { flex: 0 0 100%; }
-      /* in elke foto: Slow linksboven, Down rechtsonder, met een donkere fade erachter */
-      .campaign .word { font-size: 24cqw; }
-      .campaign .left  { left: 19%; top: 7%; bottom: auto; }
-      .campaign .right { left: 85%; bottom: 8%; }
-      .campaign .slide::after {
-        content: ""; position: absolute; inset: 0; pointer-events: none;
-        background:
-          linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .2) 22%, transparent 42%),
-          linear-gradient(to top, rgba(0, 0, 0, .5), rgba(0, 0, 0, .2) 22%, transparent 42%);
-      }
 
 
       /* stipjes onderin; de actieve foto is een streepje */
