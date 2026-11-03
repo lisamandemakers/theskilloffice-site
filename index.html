@@ -127,15 +127,19 @@
     @keyframes ticker { to { transform: translateX(-50%); } }
 
     /* ---------- Boeken ---------- */
-    .book {
+    /* boeken als kaarten naast elkaar: foto boven, korte productinfo eronder (ook op mobiel 2 naast elkaar) */
+    .books {
       max-width: 1132px;   /* productsectie blijft op de oude breedte; de rest van de site is 1400px */
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 7fr 5fr;
-      gap: clamp(24px, 5vw, 72px);
-      align-items: center;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(12px, 3vw, 40px);
       padding: clamp(48px, 7vw, 96px) 0;
     }
+    .book { display: flex; flex-direction: column; min-width: 0; }
+    .book .shot { position: relative; }
+    .book .info { display: flex; flex-direction: column; flex: 1; padding-top: 20px; }
+    .book .buy { margin-top: auto; }
 
     /* de foto's hebben rondom al exact de websitekleur (--stage), dus geen rand of masker nodig */
     .book .slides { position: relative; }
@@ -159,8 +163,12 @@
     .book .slides .mobile-only { display: none; }
     .book .dots { display: none; }
 
-    .book .no { display: flex; justify-content: space-between; align-items: center; }
-    .tag {
+    .book .no { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+    .book .cost { display: none; }   /* prijs staat op desktop in de knop; op mobiel hier */
+    .tag {   /* label linksboven op de foto */
+      position: absolute;
+      top: 14px; left: 14px;
+      z-index: 2;
       background: var(--blue);
       color: var(--aubergine);
       padding: 5px 9px 4px;
@@ -168,12 +176,13 @@
     }
     .book h2 {
       font-weight: 300;
-      font-size: clamp(32px, 3.8vw, 46px);
-      line-height: 1.08;
+      font-size: clamp(22px, 2.4vw, 30px);
+      line-height: 1.1;
       letter-spacing: -0.035em;
-      margin: 14px 0 18px;
+      margin: 10px 0 12px;
     }
-    .book .desc { font-size: var(--body); max-width: 38ch; }
+    .book .desc { font-size: var(--body); max-width: 44ch; }
+    .book .meta { font-size: 13px; color: var(--muted); margin: 14px 0 22px; letter-spacing: -0.01em; }
 
     .specs { margin: 32px 0; border-top: 1px solid var(--rule); }
     .specs div {
@@ -273,7 +282,6 @@
     @media (max-width: 760px) {
       /* mobiel: meteen het boek */
       nav { display: none; }   /* mobiel: alleen de lopende balk */
-      .book .tag { display: none; }
 
       /* mobiel: reviews swipen, volgende kaart piept in beeld */
       .reviews-head { flex-direction: column; gap: 8px; }
@@ -289,9 +297,21 @@
       }
       .review-list::-webkit-scrollbar { display: none; }
       .review { flex: 0 0 82%; scroll-snap-align: start; }
-      .book { grid-template-columns: 1fr; gap: 8px; padding-top: 0; }
+      .books { gap: 10px; padding: 24px 0 40px; }
+      .book .info { padding-top: 12px; }
+      .book .no { font-size: 9px; }
+      .book .cost { display: inline; }
+      .book h2 { font-size: 17px; margin: 6px 0 8px; }
+      .book .desc { display: none; }   /* mobiel: alleen de korte info */
+      .book .meta { font-size: 12px; line-height: 1.4; margin: 0 0 12px; }
+      .book .rating { margin: 0 0 8px; font-size: 12px; gap: 6px; }
+      .book .rating .stars svg { width: 10px; height: 10px; }
+      .tag { top: 8px; left: 8px; font-size: 8px; padding: 4px 6px 3px; }
+      .book .btn { padding: 11px 10px; justify-content: center; }
+      .book .btn .caps { font-size: 9px; text-align: center; }
+      .book .btn .price { display: none; }
+      .book .btn .lg { display: none; }   /* mobiel: knoptekst op één regel */
       .wrap { padding: 0 16px; }
-      .book .shot { margin: 32px -16px 0; }
       /* mobiel: swipen tussen cover en binnenkant */
       .book .slides {
         display: flex;
@@ -313,7 +333,7 @@
         display: flex;
         justify-content: center;
         gap: 8px;
-        margin-top: -12px;
+        margin-top: 8px;
       }
       .book .dots i {
         width: 5px; height: 5px;
@@ -324,7 +344,6 @@
       }
       .book .dots i.on { opacity: .7; }
 
-      .book { padding-bottom: 32px; }
 
       /* mobiel: prijs + knop ook altijd onderaan in beeld (kopie via script) */
       .buy-bar {
@@ -416,8 +435,7 @@
       -webkit-user-drag: none;
       user-select: none;
     }
-    .campaign .p03 img { object-position: 25% 50%; }   /* boek zit links in de foto */
-
+    
     /* Slow Down: rechtsonder in de foto, van onder naar boven, onderkant op één lijn */
     .campaign .word {
       position: absolute;
@@ -540,12 +558,13 @@
   <div class="campaign-wrap">
   <section class="campaign">
     <div class="track">
+      <!-- midden = kerstfoto strikken (was pen-zwart-hout) -->
       <div class="slide">
         <img src="img/hero/02-parijs-zwartejas-closeup-1200.jpg" srcset="img/hero/02-parijs-zwartejas-closeup-640.jpg 640w, img/hero/02-parijs-zwartejas-closeup-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="A woman in a black jacket holds Sudoku and Paper Cross Stitch on a street in Paris">
         <span class="word left" aria-hidden="true">Slow</span><span class="word right" aria-hidden="true">Down</span>
       </div>
       <div class="slide mid">
-        <img src="img/hero/pen-zwart-hout-1200.jpg" srcset="img/hero/pen-zwart-hout-640.jpg 640w, img/hero/pen-zwart-hout-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="A hand drawing a little cross with a black fineliner in Sudoku and Paper Cross Stitch on a wooden table">
+        <img src="img/hero/kerst-strikken-1200.jpg" srcset="img/hero/kerst-strikken-640.jpg 640w, img/hero/kerst-strikken-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="Sudoku and Paper Cross Stitch, Christmas Edition, surrounded by shiny aubergine gift bows">
         <span class="word left" aria-hidden="true">Slow</span><span class="word right" aria-hidden="true">Down</span>
       </div>
       <div class="slide">
@@ -563,9 +582,11 @@
   </div>
 
   <main class="wrap">
-    <!-- Nieuw boek toevoegen: kopieer dit hele <article class="book">-blok en pas foto, teksten en link aan. -->
+    <!-- Boeken naast elkaar (ook op mobiel). Nieuw boek: kopieer een <article class="book">-blok binnen .books. -->
+    <section class="books">
     <article class="book">
       <div class="shot">
+        <span class="tag caps">Out now</span>
         <div class="slides">
           <img src="img/sudoku-and-paper-cross-stitch-vol1.jpg" alt="Sudoku and Paper Cross Stitch, Vol. 01: aubergine paperback with a cross-stitched title">
           <img src="img/sudoku-and-paper-cross-stitch-vol1-inside.jpg" alt="Inside the book: a solved sudoku next to a swan in cross stitch, filled in with a light blue pen" loading="lazy">
@@ -573,8 +594,8 @@
         </div>
         <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
       </div>
-      <div>
-        <div class="caps no">Vol. 01 <span class="tag">Out now</span></div>
+      <div class="info">
+        <div class="caps no">Vol. 01 <span class="cost">$13.99</span></div>
         <h2>Sudoku and Paper Cross Stitch</h2>
         <!-- VOORBEELD: nep-score, later vervangen door de echte Amazon-score -->
         <a class="rating voorbeeld" href="#reviews">
@@ -582,12 +603,7 @@
           <span>4.9 · 24 ratings</span>
         </a>
         <p class="desc">100 easy to medium sudoku puzzles, each paired with a vintage cross-stitch pattern. You draw the stitches with a pen, one little cross at a time.</p>
-        <dl class="specs">
-          <div><dt>Puzzles</dt><dd>100, easy to medium</dd></div>
-          <div><dt>Patterns</dt><dd>100 cross stitch</dd></div>
-          <div><dt>Pages</dt><dd>224, cream paper</dd></div>
-          <div><dt>Size</dt><dd>5 × 8 in, paperback</dd></div>
-        </dl>
+        <p class="meta">100 puzzles · 100 patterns · 224 pages · 5 × 8 in paperback</p>
         <div class="buy">
           <!-- Amazon-link (ASIN B0HPKT8JLL). Op desktop maakt het script de boekfoto ook klikbaar met deze link. -->
           <a class="btn" href="https://www.amazon.com/dp/B0HPKT8JLL" target="_blank" rel="noopener">
@@ -597,6 +613,33 @@
         </div>
       </div>
     </article>
+
+    <!-- Christmas Edition: in review bij KDP. Zodra hij live staat: href="https://www.amazon.com/dp/<ASIN>" target="_blank" rel="noopener"
+         op de knop, tekst "Buy on Amazon" en de tag "Out now". -->
+    <article class="book">
+      <div class="shot">
+        <span class="tag caps">Coming soon</span>
+        <div class="slides">
+          <img src="img/sudoku-and-paper-cross-stitch-christmas.jpg" alt="Sudoku and Paper Cross Stitch, Christmas Edition: dark green paperback with a cross-stitched title and reindeer">
+          <img src="img/sudoku-and-paper-cross-stitch-christmas-inside.jpg" alt="Inside the Christmas Edition: a solved sudoku next to a Christmas tree in cross stitch, filled in with a light blue pen" loading="lazy">
+          <img class="mobile-only" src="img/sudoku-and-paper-cross-stitch-christmas-inside-empty.jpg" alt="Inside the Christmas Edition, still empty: a sudoku next to a Christmas tree pattern of faint dots" loading="lazy">
+        </div>
+        <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+      </div>
+      <div class="info">
+        <div class="caps no">Christmas Edition <span class="cost">$12.99</span></div>
+        <h2>Sudoku and Paper Cross Stitch</h2>
+        <p class="desc">50 easy to medium sudoku puzzles, each paired with a Christmas cross-stitch pattern. Little trees, snowmen and gingerbread houses, one little cross at a time.</p>
+        <p class="meta">50 puzzles · 50 patterns · 116 pages · 5 × 8 in paperback</p>
+        <div class="buy">
+          <a class="btn">
+            <span class="caps">Coming soon<span class="lg"> on Amazon</span></span>
+            <span class="price">$12.99</span>
+          </a>
+        </div>
+      </div>
+    </article>
+    </section>
 
     <!-- Fotogalerij: één rij sfeerbeelden die altijd doorloopt (script verdubbelt de rij voor een naadloze loop).
          Volgorde gemixt: nooit twee foto's uit dezelfde shoot naast elkaar (ook niet laatste → eerste). -->
