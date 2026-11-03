@@ -165,10 +165,13 @@
 
     .book .no { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
     .book .cost { display: none; }   /* prijs staat op desktop in de knop; op mobiel hier */
-    .tag {   /* label linksboven op de foto */
+    .shot .tag {   /* mobiel: label linksboven op de foto; desktop: rechts naast het volume */
       position: absolute;
       top: 14px; left: 14px;
       z-index: 2;
+      display: none;
+    }
+    .tag {
       background: var(--blue);
       color: var(--aubergine);
       padding: 5px 9px 4px;
@@ -179,10 +182,8 @@
       font-size: clamp(22px, 2.4vw, 30px);
       line-height: 1.1;
       letter-spacing: -0.035em;
-      margin: 10px 0 12px;
+      margin: 10px 0 24px;
     }
-    .book .desc { font-size: var(--body); max-width: 44ch; }
-    .book .meta { font-size: 13px; color: var(--muted); margin: 14px 0 22px; letter-spacing: -0.01em; }
 
     .specs { margin: 32px 0; border-top: 1px solid var(--rule); }
     .specs div {
@@ -297,16 +298,17 @@
       }
       .review-list::-webkit-scrollbar { display: none; }
       .review { flex: 0 0 82%; scroll-snap-align: start; }
-      .books { gap: 10px; padding: 24px 0 40px; }
+      .books { gap: 10px; padding: 56px 0 40px; }   /* 24 + 32 px boven de boekjes */
       .book .info { padding-top: 12px; }
       .book .no { font-size: 9px; }
       .book .cost { display: inline; }
       .book h2 { font-size: 17px; margin: 6px 0 8px; }
-      .book .desc { display: none; }   /* mobiel: alleen de korte info */
-      .book .meta { font-size: 12px; line-height: 1.4; margin: 0 0 12px; }
+      .shot .tag { display: block; }
+      .book .no .tag { display: none; }
+      .book h2 { margin-bottom: 12px; }
       .book .rating { margin: 0 0 8px; font-size: 12px; gap: 6px; }
       .book .rating .stars svg { width: 10px; height: 10px; }
-      .tag { top: 8px; left: 8px; font-size: 8px; padding: 4px 6px 3px; }
+      .shot .tag { top: 8px; left: 8px; font-size: 8px; padding: 4px 6px 3px; }
       .book .btn { padding: 11px 10px; justify-content: center; }
       .book .btn .caps { font-size: 9px; text-align: center; }
       .book .btn .price { display: none; }
@@ -595,15 +597,13 @@
         <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
       </div>
       <div class="info">
-        <div class="caps no">Vol. 01 <span class="cost">$13.99</span></div>
+        <div class="caps no">Vol. 01 <span class="tag">Out now</span><span class="cost">$13.99</span></div>
         <h2>Sudoku and Paper Cross Stitch</h2>
         <!-- VOORBEELD: nep-score, later vervangen door de echte Amazon-score -->
         <a class="rating voorbeeld" href="#reviews">
           <span class="stars" aria-label="5 out of 5 stars"><svg class=""><use href="#star"/></svg><svg class=""><use href="#star"/></svg><svg class=""><use href="#star"/></svg><svg class=""><use href="#star"/></svg><svg class=""><use href="#star"/></svg></span>
           <span>4.9 · 24 ratings</span>
         </a>
-        <p class="desc">100 easy to medium sudoku puzzles, each paired with a vintage cross-stitch pattern. You draw the stitches with a pen, one little cross at a time.</p>
-        <p class="meta">100 puzzles · 100 patterns · 224 pages · 5 × 8 in paperback</p>
         <div class="buy">
           <!-- Amazon-link (ASIN B0HPKT8JLL). Op desktop maakt het script de boekfoto ook klikbaar met deze link. -->
           <a class="btn" href="https://www.amazon.com/dp/B0HPKT8JLL" target="_blank" rel="noopener">
@@ -627,10 +627,8 @@
         <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
       </div>
       <div class="info">
-        <div class="caps no">Christmas Edition <span class="cost">$12.99</span></div>
+        <div class="caps no">Christmas Edition <span class="tag">Coming soon</span><span class="cost">$12.99</span></div>
         <h2>Sudoku and Paper Cross Stitch</h2>
-        <p class="desc">50 easy to medium sudoku puzzles, each paired with a Christmas cross-stitch pattern. Little trees, snowmen and gingerbread houses, one little cross at a time.</p>
-        <p class="meta">50 puzzles · 50 patterns · 116 pages · 5 × 8 in paperback</p>
         <div class="buy">
           <a class="btn">
             <span class="caps">Coming soon<span class="lg"> on Amazon</span></span>
