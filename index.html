@@ -133,6 +133,7 @@
     .original .word { font-family: "Lisa Stitch", "Jost", sans-serif; font-size: clamp(54px, 9vw, 96px); line-height: 1; color: var(--aubergine); display: block; margin: 14px 0 18px; }
     .original p { margin: 0 auto; font-size: clamp(15px, 1.6vw, 17px); line-height: 1.6; max-width: 32em; }
     @media (max-width: 760px) { .original .caps { letter-spacing: 0.14em; font-size: 10px; } }
+    @media (min-width: 900px) { main .books { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1320px; } }   /* desktop: drie boeken naast elkaar */
     .original + .books { padding-top: clamp(32px, 5vw, 64px); }
 
     /* ---------- Boeken ---------- */
