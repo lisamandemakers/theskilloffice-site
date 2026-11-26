@@ -195,6 +195,21 @@
       padding: clamp(48px, 7vw, 96px) 0;
     }
     .book { display: flex; flex-direction: column; min-width: 0; }
+    .book[hidden] { display: none; }
+    /* filtertabs boven de boeken: All / Sudoku / Word Search */
+    .shelf-tabs { display: flex; justify-content: center; gap: clamp(18px, 3vw, 36px); margin: clamp(32px, 5vw, 56px) auto 0; }
+    .shelf-tabs button {
+      font: inherit; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--aubergine);
+      background: none; border: 0; padding: 6px 0 7px; cursor: pointer; opacity: .55;
+      border-bottom: 1px solid transparent; transition: opacity .25s ease, border-color .25s ease;
+    }
+    .shelf-tabs button:hover { opacity: .85; }
+    .shelf-tabs button[aria-pressed="true"] { opacity: 1; border-bottom-color: var(--aubergine); }
+    .shelf-tabs button:focus-visible { outline: 1px solid var(--aubergine); outline-offset: 4px; }
+    .original + .shelf-tabs + .books { padding-top: clamp(24px, 3.5vw, 40px); }
+    /* reeksnaam klein voor het volume: fijn onderscheid tussen Sudoku en Word Search */
+    .book .no .series { opacity: .55; }
+    .book .no .series::after { content: " · "; }
     .book .shot { position: relative; }
     .book .info { display: flex; flex-direction: column; flex: 1; padding-top: 20px; }
     .book .buy { margin-top: auto; }
@@ -357,6 +372,10 @@
       .review-list::-webkit-scrollbar { display: none; }
       .review { flex: 0 0 82%; scroll-snap-align: start; }
       .books { gap: 10px; padding: 56px 0 40px; }   /* 24 + 32 px boven de boekjes */
+      .shelf-tabs { gap: 20px; }
+      .shelf-tabs button { font-size: 9px; letter-spacing: 0.18em; }
+      .book .no .series { display: block; margin-bottom: 4px; }   /* mobiel: reeksnaam op een eigen regel, kaarten blijven gelijk */
+      .book .no .series::after { content: none; }
       .book .info { padding-top: 12px; }
       .book .no { font-size: 9px; }
       .book .cost { display: inline; }
@@ -659,14 +678,20 @@
   </div>
 
   <main class="wrap">
-    <!-- Boeken naast elkaar (ook op mobiel). Nieuw boek: kopieer een <article class="book">-blok binnen .books. -->
+    <!-- Boeken naast elkaar (ook op mobiel). Nieuw boek: kopieer een <article class="book" data-series="...">-blok binnen .books. -->
     <section class="original">
       <div class="caps">The first &amp; original · since October 2026</div>
       <span class="word">Original</span>
       <p>Sudoku and Paper Cross Stitch is where it all started: the first book to pair sudoku with cross stitch you draw with a pen. Designed by Lisa Mandemakers, every pattern drawn cross by cross.</p>
     </section>
+    <!-- Filtertabs: data-series op elke <article class="book"> (sudoku / wordsearch). Nieuwe reeks: knop + data-series toevoegen. -->
+    <nav class="shelf-tabs" aria-label="Filter the books">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="sudoku" aria-pressed="false">Sudoku</button>
+      <button type="button" data-filter="wordsearch" aria-pressed="false">Word Search</button>
+    </nav>
     <section class="books">
-    <article class="book">
+    <article class="book" data-series="sudoku">
       <div class="shot">
         <span class="tag caps">Out now</span>
         <div class="slides">
@@ -677,7 +702,7 @@
         <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
       </div>
       <div class="info">
-        <div class="caps no">Vol. 01 <span class="tag">Out now</span><span class="cost">$13.99</span></div>
+        <div class="caps no"><span><span class="series">Sudoku</span>Vol. 01</span> <span class="tag">Out now</span><span class="cost">$13.99</span></div>
         <h2>Sudoku and Paper Cross Stitch</h2>
         <!-- VOORBEELD: nep-score, later vervangen door de echte Amazon-score -->
         <a class="rating voorbeeld" href="#reviews">
@@ -695,7 +720,7 @@
     </article>
 
     <!-- Christmas Edition: live sinds 03-11-2026 (ASIN B0HQ6LKMS4). -->
-    <article class="book">
+    <article class="book" data-series="sudoku">
       <div class="shot">
         <span class="tag caps">Out now</span>
         <div class="slides">
@@ -706,7 +731,7 @@
         <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
       </div>
       <div class="info">
-        <div class="caps no">Christmas Edition <span class="tag">Out now</span><span class="cost">$12.99</span></div>
+        <div class="caps no"><span><span class="series">Sudoku</span>Christmas Edition</span> <span class="tag">Out now</span><span class="cost">$12.99</span></div>
         <h2>Sudoku and Paper Cross Stitch</h2>
         <div class="buy">
           <!-- Amazon-link (ASIN B0HQ6LKMS4). Op desktop maakt het script de boekfoto ook klikbaar met deze link. -->
@@ -720,7 +745,7 @@
 
     <!-- Vol. 02: in review bij Amazon (25-11-2026). Na goedkeuring: href="https://www.amazon.com/dp/<ASIN>" target="_blank" rel="noopener" op de knop,
          knoptekst "Buy on Amazon" (zonder .lg), beide tags "Out now". -->
-    <article class="book">
+    <article class="book" data-series="sudoku">
       <div class="shot">
         <span class="tag caps">Coming soon</span>
         <div class="slides">
@@ -731,12 +756,36 @@
         <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
       </div>
       <div class="info">
-        <div class="caps no">Vol. 02 <span class="tag">Coming soon</span><span class="cost">$13.99</span></div>
+        <div class="caps no"><span><span class="series">Sudoku</span>Vol. 02</span> <span class="tag">Coming soon</span><span class="cost">$13.99</span></div>
         <h2>Sudoku and Paper Cross Stitch</h2>
         <div class="buy">
           <a class="btn">
             <span class="caps">Coming soon<span class="lg"> on Amazon</span></span>
             <span class="price">$13.99</span>
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Word Search Vol. 01: ingediend bij Amazon (26-11-2026), nieuwe reeks. Na goedkeuring: href="https://www.amazon.com/dp/<ASIN>" target="_blank" rel="noopener"
+         op de knop, knoptekst "Buy on Amazon" (zonder .lg), beide tags "Out now". -->
+    <article class="book" data-series="wordsearch">
+      <div class="shot">
+        <span class="tag caps">Coming soon</span>
+        <div class="slides">
+          <img src="img/wordsearch-and-paper-cross-stitch-vol1.jpg?v=1" alt="Word Search and Paper Cross Stitch, Vol. 01: aubergine paperback with a cross-stitched title and cherries" loading="lazy">
+          <img src="img/wordsearch-and-paper-cross-stitch-vol1-inside.jpg?v=2" alt="Inside the book: a Tea Time word search with highlighted words next to a teapot in cross stitch, filled in with a light blue pen" loading="lazy">
+          <img class="mobile-only" src="img/wordsearch-and-paper-cross-stitch-vol1-inside-empty.jpg?v=1" alt="Inside the book, still empty: a Tea Time word search next to a teapot pattern of faint dots" loading="lazy">
+        </div>
+        <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+      </div>
+      <div class="info">
+        <div class="caps no"><span><span class="series">Word Search</span>Vol. 01</span> <span class="tag">Coming soon</span><span class="cost">$14.49</span></div>
+        <h2>Word Search and Paper Cross Stitch</h2>
+        <div class="buy">
+          <a class="btn">
+            <span class="caps">Coming soon<span class="lg"> on Amazon</span></span>
+            <span class="price">$14.49</span>
           </a>
         </div>
       </div>
@@ -968,6 +1017,16 @@
       gtag('event', 'buy_click', { book: boek, place: a.closest('.buy-bar') ? 'mobile bar' : 'card', link_url: a.href });
     });
 
-  </script>
+  
+    // filtertabs: toon alleen de gekozen reeks
+    (() => {
+      const knoppen = document.querySelectorAll('.shelf-tabs button');
+      knoppen.forEach((k) => k.addEventListener('click', () => {
+        const f = k.dataset.filter;
+        knoppen.forEach((b) => b.setAttribute('aria-pressed', b === k ? 'true' : 'false'));
+        document.querySelectorAll('.books .book').forEach((b) => { b.hidden = f !== 'all' && b.dataset.series !== f; });
+      }));
+    })();
+</script>
 </body>
 </html>
