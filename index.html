@@ -543,6 +543,23 @@
       }
       .campaign-dots i.on { width: 20px; opacity: 1; }
     }
+  
+    /* ---------- Cookiebanner + Google Analytics (26-11-2026) ---------- */
+    /* GA4 (G-4QCJXDK0GD) laadt pas na "Accept"; keuze in localStorage. "Cookies" in de footer vraagt opnieuw. */
+    .cookie {
+      position: fixed; z-index: 20; left: 16px; right: 16px; bottom: 16px;
+      max-width: 520px; margin: 0 auto;
+      background: var(--aubergine); color: var(--cream);
+      padding: 16px 18px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+      font-size: 14px; line-height: 1.5;
+    }
+    .cookie[hidden] { display: none; }
+    .cookie p { margin: 0; flex: 1 1 240px; }
+    .cookie .opts { display: flex; gap: 8px; }
+    .cookie button { font: inherit; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; border: 1px solid var(--cream); padding: 10px 14px; cursor: pointer; background: transparent; color: var(--cream); }
+    .cookie button.yes { background: var(--blue); border-color: var(--blue); color: var(--aubergine); }
+    footer .cookie-link { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+    @media (max-width: 760px) { .cookie { bottom: calc(84px + env(safe-area-inset-bottom)); } }
   </style>
 </head>
 <body>
@@ -742,9 +759,14 @@
     <div class="wrap">
       <span class="logo">The Skill Office<sup>©</sup></span>
       <p>Designed and made by Lisa Mandemakers, a designer from the Netherlands who loves puzzles and doodling.</p>
-      <span class="caps">© 2026</span>
+      <span class="caps">© 2026 · <button class="cookie-link caps" type="button">Cookies</button></span>
     </div>
   </footer>
+
+  <div class="cookie" role="dialog" aria-label="Cookies" hidden>
+    <p>We use cookies to see how people find this little site. Is that okay?</p>
+    <div class="opts"><button class="no" type="button">No thanks</button><button class="yes" type="button">Accept</button></div>
+  </div>
 
   <script>
     // mobiel: kopie van prijs + knop als vaste balk onderaan (link staat dus maar op één plek)
@@ -860,6 +882,40 @@
         const i = Math.round(slides.scrollLeft / slides.clientWidth);
         dots.forEach((d, n) => d.classList.toggle('on', n === i));
       }, { passive: true });
+    });
+
+    // ---------- Google Analytics 4 (alleen na toestemming) ----------
+    const GA_ID = 'G-4QCJXDK0GD';
+    const cookieBox = document.querySelector('.cookie');
+    const keuze = (() => { try { return localStorage.getItem('cookies'); } catch (e) { return null; } })();
+    function bewaar(v) { try { localStorage.setItem('cookies', v); } catch (e) {} }
+    let gaGeladen = false;
+    function laadGA() {
+      if (gaGeladen) return; gaGeladen = true;
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', GA_ID);
+      const sc = document.createElement('script');
+      sc.async = true; sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.append(sc);
+    }
+    if (keuze === 'ja') laadGA(); else if (keuze !== 'nee') cookieBox.hidden = false;
+    cookieBox.querySelector('.yes').addEventListener('click', () => { bewaar('ja'); cookieBox.hidden = true; laadGA(); });
+    cookieBox.querySelector('.no').addEventListener('click', () => {
+      bewaar('nee'); cookieBox.hidden = true;
+      if (gaGeladen) location.reload();   // was eerder 'ja': GA stoppen
+    });
+    document.querySelector('.cookie-link').addEventListener('click', () => { cookieBox.hidden = false; });
+
+    // klik op een Amazon-knop = event "buy_click" met welk boek (en of het de vaste balk op mobiel was)
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href*="amazon."]');
+      if (!a || !window.gtag) return;
+      const kaart = a.closest('.book');
+      const no = kaart && kaart.querySelector('.no');
+      const boek = no ? no.firstChild.textContent.trim() : 'Vol. 01';
+      gtag('event', 'buy_click', { book: boek, place: a.closest('.buy-bar') ? 'mobile bar' : 'card', link_url: a.href });
     });
 
   </script>
