@@ -548,6 +548,19 @@
       .campaign .slide:not(.mid)::after { display: none; }
     }
 
+
+    /* tagline op de eerste foto (wens Lisa 26-11-2026), vooral voor mobiel; staat linksonder, uit de buurt van "Down" rechts */
+    .campaign .tagline {
+      position: absolute; z-index: 1; left: 7%; bottom: 7%; max-width: 62%;
+      color: #fff; pointer-events: none;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, .35);
+    }
+    .campaign .tagline .caps { display: block; margin-bottom: 6px; opacity: .9; }
+    .campaign .tagline strong { display: block; font-weight: 300; font-size: clamp(22px, 7cqw, 30px); line-height: 1.15; letter-spacing: -0.02em; }
+    @media (min-width: 761px) {
+      .campaign .slide.first::after { display: block; background: linear-gradient(to top, rgba(0, 0, 0, .45), rgba(0, 0, 0, .15) 25%, transparent 45%); }
+    }
+
     /* desktop: de navigatiebalk valt over de foto's heen */
     @media (min-width: 761px) {
       .hero { position: relative; z-index: 2; overflow: visible; background: var(--aubergine); color: #fff; }
@@ -655,7 +668,8 @@
   <section class="campaign">
     <div class="track">
       <!-- links = eigen foto vriendinnen (IMG_3196, was 02-parijs), midden = kerstfoto strikken (was pen-zwart-hout), rechts = eigen foto handen Vol. 01 (IMG_4228, was 17-luipaard) -->
-      <div class="slide">
+      <div class="slide first">
+        <p class="tagline"><span class="caps">The first</span><strong>paper cross stitch book</strong></p>
         <img src="img/hero/eigen-vriendinnen-boeken-1200.jpg" srcset="img/hero/eigen-vriendinnen-boeken-640.jpg 640w, img/hero/eigen-vriendinnen-boeken-1200.jpg 1200w" sizes="(max-width: 760px) 100vw, 34vw" alt="Two friends on the street, one holding the Christmas Edition and one holding Vol. 01 of Sudoku and Paper Cross Stitch">
         <span class="word left" aria-hidden="true">Slow</span><span class="word right" aria-hidden="true">Down</span>
       </div>
