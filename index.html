@@ -126,6 +126,15 @@
     }
     @keyframes ticker { to { transform: translateX(-50%); } }
 
+
+    /* ---------- The original ---------- */
+    /* boven de boeken: wij zijn de eerste met dit concept (wens Lisa 26-11-2026, i.v.m. kopieën). Positief, geen namen van anderen. */
+    .original { text-align: center; padding: clamp(48px, 7vw, 88px) 0 0; max-width: 620px; margin: 0 auto; }
+    .original .word { font-family: "Lisa Stitch", "Jost", sans-serif; font-size: clamp(54px, 9vw, 96px); line-height: 1; color: var(--aubergine); display: block; margin: 14px 0 18px; }
+    .original p { margin: 0 auto; font-size: clamp(15px, 1.6vw, 17px); line-height: 1.6; max-width: 32em; }
+    @media (max-width: 760px) { .original .caps { letter-spacing: 0.14em; font-size: 10px; } }
+    .original + .books { padding-top: clamp(32px, 5vw, 64px); }
+
     /* ---------- Boeken ---------- */
     /* boeken als kaarten naast elkaar: foto boven, korte productinfo eronder (ook op mobiel 2 naast elkaar) */
     .books {
@@ -543,8 +552,8 @@
   <header class="hero">
     <div class="ticker caps" aria-label="Out now">
       <div class="track" aria-hidden="true">
-        <span>Out now on Amazon</span><span class="x"></span><span>Christmas Edition out now</span><span class="x"></span><span>Your new 5-minute reset</span><span class="x"></span><span>Soft life, one little cross at a time</span><span class="x"></span><span>100 sudokus + 100 tiny cross stitches</span><span class="x"></span><span>Just you, a pen and a cozy moment</span><span class="x"></span><span>Romanticize your coffee break</span><span class="x"></span><span>Pocket-sized calm, wherever you are</span><span class="x"></span><span>Your new comfort hobby</span><span class="x"></span><span>The cutest gift for your bestie</span><span class="x"></span><span>Main character energy, analog edition</span><span class="x"></span>
-        <span>Out now on Amazon</span><span class="x"></span><span>Christmas Edition out now</span><span class="x"></span><span>Your new 5-minute reset</span><span class="x"></span><span>Soft life, one little cross at a time</span><span class="x"></span><span>100 sudokus + 100 tiny cross stitches</span><span class="x"></span><span>Just you, a pen and a cozy moment</span><span class="x"></span><span>Romanticize your coffee break</span><span class="x"></span><span>Pocket-sized calm, wherever you are</span><span class="x"></span><span>Your new comfort hobby</span><span class="x"></span><span>The cutest gift for your bestie</span><span class="x"></span><span>Main character energy, analog edition</span><span class="x"></span>
+        <span>Out now on Amazon</span><span class="x"></span><span>Christmas Edition out now</span><span class="x"></span><span>The first &amp; original</span><span class="x"></span><span>Your new 5-minute reset</span><span class="x"></span><span>Soft life, one little cross at a time</span><span class="x"></span><span>100 sudokus + 100 tiny cross stitches</span><span class="x"></span><span>Just you, a pen and a cozy moment</span><span class="x"></span><span>Romanticize your coffee break</span><span class="x"></span><span>Pocket-sized calm, wherever you are</span><span class="x"></span><span>Your new comfort hobby</span><span class="x"></span><span>The cutest gift for your bestie</span><span class="x"></span><span>Main character energy, analog edition</span><span class="x"></span>
+        <span>Out now on Amazon</span><span class="x"></span><span>Christmas Edition out now</span><span class="x"></span><span>The first &amp; original</span><span class="x"></span><span>Your new 5-minute reset</span><span class="x"></span><span>Soft life, one little cross at a time</span><span class="x"></span><span>100 sudokus + 100 tiny cross stitches</span><span class="x"></span><span>Just you, a pen and a cozy moment</span><span class="x"></span><span>Romanticize your coffee break</span><span class="x"></span><span>Pocket-sized calm, wherever you are</span><span class="x"></span><span>Your new comfort hobby</span><span class="x"></span><span>The cutest gift for your bestie</span><span class="x"></span><span>Main character energy, analog edition</span><span class="x"></span>
       </div>
     </div>
     <div class="wrap">
@@ -585,6 +594,11 @@
 
   <main class="wrap">
     <!-- Boeken naast elkaar (ook op mobiel). Nieuw boek: kopieer een <article class="book">-blok binnen .books. -->
+    <section class="original">
+      <div class="caps">The first &amp; original · since October 2026</div>
+      <span class="word">Original</span>
+      <p>Sudoku and Paper Cross Stitch is where it all started: the first book to pair sudoku with cross stitch you draw with a pen. Designed by Lisa Mandemakers, every pattern drawn cross by cross.</p>
+    </section>
     <section class="books">
     <article class="book">
       <div class="shot">
